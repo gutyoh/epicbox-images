@@ -4,9 +4,14 @@ ENV GO111MODULE=on
 
 RUN apk add --no-cache python3 openjdk17-jdk curl bash
 
-RUN apk add --no-cache python3-dev py3-pip gcc musl-dev linux-headers && \
-    pip3 install aiosmtpd beautifulsoup4 pyyaml https://github.com/hyperskill/hs-test-python/archive/v11.0.0.tar.gz && \
-    apk del --no-cache python3-dev py3-pip linux-headers
+RUN apk add --no-cache python3-dev py3-pip gcc musl-dev linux-headers
+
+RUN python3 -m venv /venv && \
+    . /venv/bin/activate && \
+    pip install aiosmtpd beautifulsoup4 pyyaml && \
+    pip install https://github.com/hyperskill/hs-test-python/archive/v11.0.0.tar.gz
+
+RUN apk del --no-cache python3-dev py3-pip linux-headers
 
 RUN mkdir /checker && \
     curl -L -o /checker/kotlin.zip \
